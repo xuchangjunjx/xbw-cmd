@@ -9,4 +9,3 @@ download("xubowenjx/webpack", projectName + "/tmp")
   .catch(err => {
     console.log(err);
   });
-//generate('/Users/xubowen/Documents/template','/Users/xubowen/Documents/instance')

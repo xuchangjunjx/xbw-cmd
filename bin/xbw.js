@@ -14,11 +14,12 @@ program
 //lisenter event
 program.on("command:*", function(args) {
   let cmd = args[0];
-  console.log(cmd);
+  //check command is valid
   if (["init"].includes(cmd)) {
   } else {
     logger.error(`Invalid command: ${program.args.join(" ")}`);
     process.exit(1);
   }
 });
+//parse arguments
 program.parse(process.argv);
