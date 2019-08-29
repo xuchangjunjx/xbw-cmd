@@ -12,9 +12,9 @@ program
   // 子命令: xbw create 分发到xbw-create文件中处理
   .command('create', 'create something');
 
-//监听命令
+// 监听命令
 program.on('command:*', function(args) {
-  let cmd = args[0];
+  const cmd = args[0];
   // 检查是不是合法的命令
   if (['init', 'create'].includes(cmd)) {
   } else {

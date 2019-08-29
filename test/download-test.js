@@ -1,11 +1,36 @@
-var download = require("../lib/download");
-var generate = require("../lib/generate");
-var projectName = "../my-project1";
-download("xubowenjx/webpack", projectName, "/tmp")
-  .then(template => {
-    let templatePath = template;
-    generate({ name: "hellow" }, templatePath, projectName);
+var download = require('../lib/download');
+var generate = require('../lib/generate');
+var logger = require('../lib/logger');
+
+var inquirer = require('inquirer');
+
+const questions = [
+  {
+    type: 'input',
+    name: 'gitrp',
+    message: '请输入git repo',
+    default: 'xubowenjx/webpack'
+  },
+  {
+    type: 'input',
+    name: 'project',
+    message: '请输入项目名称',
+    default: 'my-project'
+  }
+];
+new Promise((resolve, reject) => {
+  // 交互开始
+  inquirer.prompt(questions).then(answers => {
+    resolve(answers);
+  });
+})
+  .then(meta => {
+    return download(meta.gitrp, meta.project, '/tmp');
   })
-  .catch(err => {
-    console.log(err);
+  .then((template, projectName) => {
+    logger.info(`template ${template}`);
+    return generate({ name: projectName }, template);
+  })
+  .then(() => {
+    logger.success('project init success ');
   });
