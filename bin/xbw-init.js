@@ -7,6 +7,7 @@ const ora = require("ora");
 const localPath = require("../lib/local-path");
 const getPath = localPath.getTemplatePath;
 const logger = require("../lib/logger");
+const promote = require("../lib/promote");
 
 const uis = ["iview", "museui", "element-ui"];
 function oneOf(type) {
@@ -16,7 +17,7 @@ function oneOf(type) {
 let uitype, projectName;
 program
   .usage("init [ui-type] [projectName]", "ui-type required")
-  .arguments("<uitype> <projectName>")
+  .arguments("<uitype> [projectName]")
   .action(function(ag1, ag2) {
     uitype = ag1;
     projectName = ag2;
@@ -30,23 +31,43 @@ program.on("--help", function() {
   logger.info("Examples:");
   logger.info("   $ xbw init museui my-project");
 });
+//没有参数就给出提示
 if (!uitype && !projectName) {
   program.help();
 }
+
+// 检查参数是否符合规范
 if (uitype && !oneOf(uitype)) {
   logger.error(`ui muse be one of ${uis}`);
   process.exit(0);
 }
-if (projectName) {
-  let projectPath = getPath(projectName);
-  if (exists(projectPath)) {
-    logger.error(`current project dir is exists`);
-  } else {
-    const spinner = ora("init project");
-    spinner.start();
-    setTimeout(() => {
-      //下载模板
-      spinner.succeed();
-    }, 2000);
-  }
+function download() {
+  const spinner = ora("init project");
+  spinner.start();
+  setTimeout(() => {
+    //模拟下载模板
+    spinner.succeed();
+  }, 2000);
+}
+let projectPath = getPath(projectName || process.cwd());
+if (exists(projectPath)) {
+  let data = {
+    place: false
+  };
+  promote(
+    {
+      type: "confirm", //Yes or No
+      name: "place",
+      message: "确认在当前文件夹初始化?",
+      default: true
+    },
+    data,
+    () => {
+      if (data.place) {
+        download();
+      }
+    }
+  );
+} else {
+  download();
 }
