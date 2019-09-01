@@ -10,6 +10,10 @@
   "bin": {
     "xbw": "bin/xbw.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xubowenjx/xbw-cmd"
+  },
   "author": "xubowen",
   "license": "MIT",
   "dependencies": {
