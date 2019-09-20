@@ -9,7 +9,7 @@ const questions = [
     type: 'input',
     name: 'gitrp',
     message: '请输入git repo',
-    default: 'xubowenjx/webpack'
+    default: 'xubowenjx/iview-template'
   },
   {
     type: 'input',
@@ -33,4 +33,7 @@ new Promise((resolve, reject) => {
   })
   .then(() => {
     logger.success('project init success ');
+  })
+  .catch(err => {
+    logger.error(err);
   });
