@@ -1,23 +1,10 @@
 var download = require('../lib/download');
 var generate = require('../lib/generate');
 var logger = require('../lib/logger');
+const questions = require('../lib/questions');
 
 var inquirer = require('inquirer');
 
-const questions = [
-  {
-    type: 'input',
-    name: 'gitrp',
-    message: '请输入git repo',
-    default: 'xubowenjx/iview-template'
-  },
-  {
-    type: 'input',
-    name: 'project',
-    message: '请输入项目名称',
-    default: 'my-project'
-  }
-];
 new Promise((resolve, reject) => {
   // 交互开始
   inquirer.prompt(questions).then(answers => {
@@ -25,11 +12,13 @@ new Promise((resolve, reject) => {
   });
 })
   .then(meta => {
-    return download(meta.gitrp, meta.project, '/tmp');
+    if (meta.ui) {
+      meta.gitrp = `xubowenjx/${meta.ui}-template`;
+    }
+    return download(meta, '/tmp');
   })
-  .then((template, projectName) => {
-    logger.info(`template ${template}`);
-    return generate({ name: projectName }, template);
+  .then(({ tmppath, meta }) => {
+    return generate(meta, tmppath, tmppath.replace('/tmp', ''));
   })
   .then(() => {
     logger.success('project init success ');
