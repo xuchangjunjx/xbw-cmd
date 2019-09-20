@@ -2,7 +2,7 @@ var download = require('../lib/download');
 var generate = require('../lib/generate');
 var logger = require('../lib/logger');
 const questions = require('../lib/questions');
-
+var install = require('../lib/installDependence.js');
 var inquirer = require('inquirer');
 
 new Promise((resolve, reject) => {
@@ -20,8 +20,8 @@ new Promise((resolve, reject) => {
   .then(({ tmppath, meta }) => {
     return generate(meta, tmppath, tmppath.replace('/tmp', ''));
   })
-  .then(() => {
-    logger.success('project init success ');
+  .then(destination => {
+    install(destination);
   })
   .catch(err => {
     logger.error(err);
