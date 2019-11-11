@@ -16,8 +16,7 @@ program
 program.on('command:*', function(args) {
   const cmd = args[0];
   // 检查是不是合法的命令
-  if (['init', 'create'].includes(cmd)) {
-  } else {
+  if (!['init', 'create'].includes(cmd)) {
     // 不是合法的要进行提示
     logger.error(`Invalid command: ${program.args.join(' ')}`);
     process.exit(1);
